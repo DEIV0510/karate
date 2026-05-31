@@ -1,0 +1,17 @@
+# Sistema
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store
+
+# Dependencias / build (por si acaso a futuro)
+node_modules/
+dist/
+
+# Editores
+.vscode/
+.idea/
+
+# Artefactos de verificación
+.playwright-mcp/
+*.log
