@@ -661,7 +661,7 @@ soundBtn.addEventListener('click',()=>{ soundOn=!soundOn; localStorage.setItem('
 let ytPlayer=null, ytReady=false, musicOn=false, musicStarted=false, musicWantStart=false;
 window.onYouTubeIframeAPIReady=function(){
   ytPlayer=new YT.Player('ytPlayer',{
-    width:'240',height:'135',videoId:'ExCIp6TOnJw',
+    width:'240',height:'135',videoId:'jD8AUGIp9zI',
     playerVars:{playsinline:1,rel:0,modestbranding:1},
     events:{
       'onReady':function(){ ytReady=true; try{ytPlayer.setVolume(45);}catch(e){} if(musicWantStart) startMusic(); },
