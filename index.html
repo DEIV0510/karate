@@ -947,21 +947,28 @@ function init3DBg(){
   const pg=new THREE.PointLight(0x1fa64b,0.9,80); pg.position.set(-9,5,7); scene.add(pg);
   const pj=new THREE.PointLight(0xffc02e,0.8,80); pj.position.set(9,-5,6); scene.add(pj);
   const group=new THREE.Group(); scene.add(group);
-  const palette=[0x1fa64b,0xffc02e,0xd2691e,0x7c4dd6,0xff8fb1,0xffffff];
-  const N=innerWidth<480?13:18, objs=[];
+  // ---- objetos alusivos al karate ----
+  function kanjiTex(ch,fg){ const c=document.createElement('canvas'); c.width=c.height=128; const x=c.getContext('2d'); x.clearRect(0,0,128,128); x.fillStyle=fg; x.font='bold 96px "Mochiy Pop One","Yu Gothic","Hiragino Kaku Gothic Pro",sans-serif'; x.textAlign='center'; x.textBaseline='middle'; x.fillText(ch,64,72); const t=new THREE.CanvasTexture(c); t.anisotropy=4; return t; }
+  function makeKanji(ch,col){ return new THREE.Mesh(new THREE.PlaneGeometry(1.5,1.5), new THREE.MeshBasicMaterial({map:kanjiTex(ch,col),transparent:true,side:THREE.DoubleSide})); }      // kanji flotando
+  function makeBelt(col){ const m=new THREE.Mesh(new THREE.TorusGeometry(0.72,0.2,14,36), new THREE.MeshStandardMaterial({color:col,roughness:.55,metalness:.2})); m.scale.z=0.42; return m; }      // cinturón
+  function makeMedal(){ const m=new THREE.Mesh(new THREE.CylinderGeometry(0.7,0.7,0.13,36), new THREE.MeshStandardMaterial({color:0xffc02e,roughness:.25,metalness:.9})); m.rotation.x=Math.PI/2; return m; }      // medalla
+  function makeHinomaru(){ const g=new THREE.Group(); const base=new THREE.Mesh(new THREE.CylinderGeometry(0.72,0.72,0.07,40), new THREE.MeshStandardMaterial({color:0xffffff,roughness:.6})); base.rotation.x=Math.PI/2; const sun=new THREE.Mesh(new THREE.CylinderGeometry(0.42,0.42,0.09,40), new THREE.MeshStandardMaterial({color:0xe2231a,roughness:.5,emissive:0x7a0d08,emissiveIntensity:.3})); sun.rotation.x=Math.PI/2; sun.position.z=0.02; g.add(base,sun); return g; }      // sol naciente / hachimaki
+  function makeTorii(){ const g=new THREE.Group(); const mat=new THREE.MeshStandardMaterial({color:0xd23b2e,roughness:.5,metalness:.15}); const pg=new THREE.CylinderGeometry(0.13,0.13,2,14); const lp=new THREE.Mesh(pg,mat); lp.position.x=-0.72; const rp=new THREE.Mesh(pg,mat); rp.position.x=0.72; const kasagi=new THREE.Mesh(new THREE.BoxGeometry(2.5,0.26,0.26),mat); kasagi.position.y=1.06; const nuki=new THREE.Mesh(new THREE.BoxGeometry(2.0,0.17,0.2),mat); nuki.position.y=0.6; g.add(lp,rp,kasagi,nuki); g.scale.setScalar(0.6); return g; }      // torii
+  const beltCols=[0x1a1a1a,0x1f9a46,0xd2691e,0x7c4dd6];
+  const kanjis=[['空','#ffffff'],['手','#ffe08a'],['必','#ffffff'],['勝','#ffe08a'],['道','#bfe6c8'],['心','#ffd1e3'],['礼','#ffffff'],['勇','#ffe08a']];
+  const specs=[ ()=>makeTorii(), ()=>makeHinomaru(), ()=>makeMedal() ];
+  kanjis.forEach(k=>specs.push(()=>makeKanji(k[0],k[1])));
+  beltCols.forEach(c=>specs.push(()=>makeBelt(c)));
+  specs.push(()=>makeHinomaru(), ()=>makeMedal());
+  if(innerWidth>=480) specs.push(()=>makeTorii());
+  const N=innerWidth<480?14:specs.length, objs=[];
   for(let i=0;i<N;i++){
-    let geo; const t=i%4;
-    if(t===0) geo=new THREE.TorusGeometry(0.7,0.27,16,40);
-    else if(t===1) geo=new THREE.CylinderGeometry(0.72,0.72,0.16,36);
-    else if(t===2) geo=new THREE.IcosahedronGeometry(0.72,0);
-    else geo=new THREE.TorusKnotGeometry(0.5,0.17,80,12);
-    const mat=new THREE.MeshStandardMaterial({color:palette[i%palette.length],metalness:t===1?0.85:0.35,roughness:t===1?0.25:0.5});
-    const m=new THREE.Mesh(geo,mat);
-    m.position.set((Math.random()*2-1)*11,(Math.random()*2-1)*8,(Math.random()*2-1)*5-3);
-    const s=0.55+Math.random()*0.9; m.scale.set(s,s,s);
-    m.rotation.set(Math.random()*6,Math.random()*6,Math.random()*6);
-    m.userData={rx:(Math.random()*2-1)*0.005,ry:(Math.random()*2-1)*0.006,fa:0.4+Math.random()*0.5,fp:Math.random()*6,by:m.position.y};
-    group.add(m); objs.push(m);
+    const o=specs[i]();
+    o.position.set((Math.random()*2-1)*11,(Math.random()*2-1)*8,(Math.random()*2-1)*5-3);
+    o.scale.multiplyScalar(0.6+Math.random()*0.7);
+    o.rotation.set(Math.random()*0.6-0.3, Math.random()*6, Math.random()*0.6-0.3);
+    o.userData={rx:(Math.random()*2-1)*0.0025,ry:(Math.random()*2-1)*0.006,fa:0.4+Math.random()*0.5,fp:Math.random()*6,by:o.position.y};
+    group.add(o); objs.push(o);
   }
   let tx=0,ty=0,cx=0,cy=0;
   addEventListener('pointermove',(e)=>{ tx=e.clientX/innerWidth-0.5; ty=e.clientY/innerHeight-0.5; },{passive:true});
