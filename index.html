@@ -42,6 +42,7 @@ body{
 .bg-deco span{position:absolute;font-family:'Mochiy Pop One';opacity:.1;font-size:clamp(120px,18vw,260px);user-select:none;color:var(--green-deep);}
 .bg-deco .k1{top:6%;left:3%;} .bg-deco .k2{bottom:8%;right:3%;color:var(--gold-deep);}
 @media(min-width:1024px){.bg-deco{display:block;}}
+#bg3d{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.92;}
 
 .petal{position:fixed;top:-6vh;z-index:1;pointer-events:none;width:14px;height:14px;border-radius:150% 0 150% 0;opacity:.85;will-change:transform;animation:petal-fall linear infinite;}
 @keyframes petal-fall{0%{transform:translateY(-10vh) translateX(0) rotate(0deg);}100%{transform:translateY(112vh) translateX(40px) rotate(420deg);}}
@@ -85,7 +86,7 @@ body{
 .paisa{display:inline-flex;align-items:center;gap:7px;margin-top:14px;background:var(--green-deep);color:#fff;font-family:'Baloo 2';font-weight:700;font-size:12px;letter-spacing:1px;padding:6px 14px;border-radius:999px;box-shadow:var(--shadow-sm);}
 .paisa svg{width:15px;height:15px;}
 .hero-photo{position:relative;margin:20px auto 4px;width:100%;max-width:340px;}
-.hp-frame{overflow:hidden;border-radius:24px;border:5px solid #fff;box-shadow:var(--shadow);}
+.hp-frame{overflow:hidden;border-radius:24px;border:5px solid #fff;box-shadow:var(--shadow);transform:perspective(700px) rotateX(var(--hrx,0deg)) rotateY(var(--hry,0deg));transition:transform .2s ease;will-change:transform;}
 .hero-photo img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;animation:kenburns 18s ease-in-out infinite alternate;}
 @keyframes kenburns{0%{transform:scale(1.03) translate(0,0);}100%{transform:scale(1.15) translate(-3%,-3%);}}
 .hero-photo::before{content:"";position:absolute;top:-12px;left:50%;transform:translateX(-50%) rotate(-3deg);width:120px;height:26px;background:rgba(255,192,46,.65);border-radius:3px;box-shadow:0 2px 6px rgba(0,0,0,.12);}
@@ -331,6 +332,7 @@ footer .made{margin-top:6px;color:var(--gold-deep);font-family:'Baloo 2';}
 </div>
 
 <div class="bg-deco" aria-hidden="true"><span class="k1">空</span><span class="k2">手</span></div>
+<canvas id="bg3d" aria-hidden="true"></canvas>
 
 <header class="topbar">
   <span class="brand">
@@ -485,6 +487,7 @@ footer .made{margin-top:6px;color:var(--gold-deep);font-family:'Baloo 2';}
 <!-- reproductor de música oculto -->
 <div id="ytWrap" aria-hidden="true"><div id="ytPlayer"></div></div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 /* ============================ DATOS ============================ */
 const TEAM = [
@@ -928,8 +931,59 @@ if(msg){const mio=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersec
 let lastSpark=0;
 addEventListener('pointermove',(e)=>{ if(reduce)return; const now=performance.now(); if(now-lastSpark<55)return; lastSpark=now; const s=document.createElement('div'); s.className='sparkle'; s.textContent=['✦','✧','⭐','💚','✨'][Math.floor(Math.random()*5)]; s.style.left=e.clientX+'px'; s.style.top=e.clientY+'px'; s.style.fontSize=(10+Math.random()*10)+'px'; document.body.appendChild(s); s.addEventListener('animationend',()=>s.remove()); },{passive:true});
 
-/* ---- pétalos ---- */
-if(!reduce){
+/* ---- fondo 3D profesional (Three.js) ---- */
+function init3DBg(){
+  if(reduce || typeof THREE==='undefined') return;
+  const canvas=document.getElementById('bg3d'); if(!canvas) return;
+  let renderer;
+  try{ renderer=new THREE.WebGLRenderer({canvas:canvas,alpha:true,antialias:true}); }catch(e){ return; }
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+  const scene=new THREE.Scene();
+  const camera=new THREE.PerspectiveCamera(50, innerWidth/innerHeight, 0.1, 100); camera.position.z=14;
+  function resize(){ camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth,innerHeight,false); }
+  resize(); addEventListener('resize',resize,{passive:true});
+  scene.add(new THREE.AmbientLight(0xffffff,0.8));
+  const dl=new THREE.DirectionalLight(0xffffff,0.9); dl.position.set(3,6,5); scene.add(dl);
+  const pg=new THREE.PointLight(0x1fa64b,0.9,80); pg.position.set(-9,5,7); scene.add(pg);
+  const pj=new THREE.PointLight(0xffc02e,0.8,80); pj.position.set(9,-5,6); scene.add(pj);
+  const group=new THREE.Group(); scene.add(group);
+  const palette=[0x1fa64b,0xffc02e,0xd2691e,0x7c4dd6,0xff8fb1,0xffffff];
+  const N=innerWidth<480?13:18, objs=[];
+  for(let i=0;i<N;i++){
+    let geo; const t=i%4;
+    if(t===0) geo=new THREE.TorusGeometry(0.7,0.27,16,40);
+    else if(t===1) geo=new THREE.CylinderGeometry(0.72,0.72,0.16,36);
+    else if(t===2) geo=new THREE.IcosahedronGeometry(0.72,0);
+    else geo=new THREE.TorusKnotGeometry(0.5,0.17,80,12);
+    const mat=new THREE.MeshStandardMaterial({color:palette[i%palette.length],metalness:t===1?0.85:0.35,roughness:t===1?0.25:0.5});
+    const m=new THREE.Mesh(geo,mat);
+    m.position.set((Math.random()*2-1)*11,(Math.random()*2-1)*8,(Math.random()*2-1)*5-3);
+    const s=0.55+Math.random()*0.9; m.scale.set(s,s,s);
+    m.rotation.set(Math.random()*6,Math.random()*6,Math.random()*6);
+    m.userData={rx:(Math.random()*2-1)*0.005,ry:(Math.random()*2-1)*0.006,fa:0.4+Math.random()*0.5,fp:Math.random()*6,by:m.position.y};
+    group.add(m); objs.push(m);
+  }
+  let tx=0,ty=0,cx=0,cy=0;
+  addEventListener('pointermove',(e)=>{ tx=e.clientX/innerWidth-0.5; ty=e.clientY/innerHeight-0.5; },{passive:true});
+  addEventListener('deviceorientation',(e)=>{ if(e.gamma!=null){ tx=Math.max(-1,Math.min(1,e.gamma/45)); ty=Math.max(-1,Math.min(1,(e.beta-40)/45)); } },{passive:true});
+  let t=0;
+  (function loop(){
+    requestAnimationFrame(loop);
+    if(document.hidden) return;
+    t+=0.016; cx+=(tx-cx)*0.05; cy+=(ty-cy)*0.05;
+    group.rotation.y=cx*0.45; group.rotation.x=cy*0.32;
+    for(let k=0;k<objs.length;k++){ const m=objs[k],u=m.userData; m.rotation.x+=u.rx; m.rotation.y+=u.ry; m.position.y=u.by+Math.sin(t*u.fa+u.fp)*0.5; }
+    renderer.render(scene,camera);
+  })();
+  window.__bg3d=true;
+}
+init3DBg();
+
+/* ---- tilt 3D de la foto del hero ---- */
+(function(){ const hp=document.querySelector('.hero-photo'), fr=document.querySelector('.hp-frame'); if(!hp||!fr||reduce) return; hp.addEventListener('pointermove',(e)=>{ const r=hp.getBoundingClientRect(); const px=(e.clientX-r.left)/r.width-0.5, py=(e.clientY-r.top)/r.height-0.5; fr.style.setProperty('--hry',(px*12).toFixed(1)+'deg'); fr.style.setProperty('--hrx',(-py*12).toFixed(1)+'deg'); }); hp.addEventListener('pointerleave',()=>{ fr.style.setProperty('--hrx','0deg'); fr.style.setProperty('--hry','0deg'); }); })();
+
+/* ---- pétalos (respaldo si no hay 3D) ---- */
+if(!reduce && !window.__bg3d){
   const colors=['radial-gradient(circle at 30% 30%,#d8f3c8,#7ec98a)','radial-gradient(circle at 30% 30%,#ffe1ee,#ff9ec6)','radial-gradient(circle at 30% 30%,#fff0c2,#ffc02e)'];
   for(let i=0;i<16;i++){
     const p=document.createElement('div');p.className='petal';const s=8+Math.random()*12;
