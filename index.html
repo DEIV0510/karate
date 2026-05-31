@@ -55,7 +55,7 @@ body{
 
 /* ===== HERO ===== */
 .hero{text-align:center;padding:14px 6px 8px;}
-.logo-card{width:138px;height:138px;margin:0 auto 6px;background:#fff;border-radius:28px;padding:10px;box-shadow:var(--shadow);border:3px solid var(--green);position:relative;}
+.logo-card{width:138px;height:138px;margin:0 auto 6px;background:#fff;border-radius:28px;padding:10px;box-shadow:var(--shadow);border:3px solid var(--green);position:relative;cursor:pointer;}
 .logo-card img{width:100%;height:100%;object-fit:contain;}
 .logo-card::after{content:"🥋";position:absolute;right:-10px;bottom:-8px;font-size:26px;transform:rotate(12deg);filter:drop-shadow(0 2px 3px rgba(0,0,0,.2));}
 .kanji-top{font-family:'Mochiy Pop One';font-size:26px;color:var(--green);letter-spacing:10px;text-indent:10px;margin:8px 0 2px;}
@@ -88,7 +88,8 @@ body{
 .hero-photo::before{content:"";position:absolute;top:-12px;left:50%;transform:translateX(-50%) rotate(-3deg);width:120px;height:26px;background:rgba(255,192,46,.65);border-radius:3px;box-shadow:0 2px 6px rgba(0,0,0,.12);}
 .hero-photo .tag{position:absolute;right:-8px;bottom:14px;background:var(--green);color:#fff;font-family:'Baloo 2';font-weight:800;font-size:13px;padding:7px 13px;border-radius:14px;transform:rotate(-4deg);box-shadow:var(--shadow-sm);border:2px solid #fff;}
 .names-strip{display:flex;flex-wrap:wrap;justify-content:center;gap:7px;margin-top:16px;}
-.name-chip{font-family:'Baloo 2';font-weight:700;font-size:14px;padding:6px 13px;border-radius:999px;color:#fff;box-shadow:var(--shadow-sm);}
+.name-chip{font-family:'Baloo 2';font-weight:700;font-size:14px;padding:6px 13px;border-radius:999px;color:#fff;box-shadow:var(--shadow-sm);border:none;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .12s ease;}
+.name-chip:active{transform:scale(.93);}
 
 .peek{display:flex;justify-content:center;margin-top:20px;}
 .peek-m{background:none;border:none;padding:0;margin:0 -8px;cursor:pointer;position:relative;-webkit-tap-highlight-color:transparent;}
@@ -112,20 +113,22 @@ body{
 .sec-title h2{font-family:'Baloo 2';font-weight:800;font-size:clamp(28px,8vw,36px);color:var(--ink);line-height:1.05;}
 .sec-title p{font-size:15px;color:var(--ink-soft);font-weight:600;margin-top:4px;}
 
-/* ===== TARJETAS (con flip) ===== */
+/* ===== TARJETAS (con flip + tilt 3D) ===== */
 .team{display:grid;gap:18px;margin-top:18px;}
 .fighter{position:relative;opacity:0;transform:translateY(26px);}
 .fighter.in{opacity:1;transform:none;transition:opacity .6s ease, transform .6s cubic-bezier(.2,.8,.2,1);}
-.flip{perspective:1300px;}
-.flip-inner{position:relative;transition:transform .65s cubic-bezier(.2,.8,.2,1);transform-style:preserve-3d;}
-.fighter.flipped .flip-inner{transform:rotateY(180deg);}
-.face{border-radius:var(--r-lg);border:2px solid #fff;box-shadow:var(--shadow);background:var(--paper);overflow:hidden;-webkit-backface-visibility:hidden;backface-visibility:hidden;}
+.flip{perspective:1100px;}
+.flip-inner{position:relative;transform-style:preserve-3d;transition:transform .3s ease;transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));}
+.fighter.flipped .flip-inner{transform:rotateY(180deg);transition:transform .6s cubic-bezier(.2,.8,.2,1);}
+.face{border-radius:var(--r-lg);border:2px solid #fff;box-shadow:var(--shadow);background:var(--paper);overflow:hidden;-webkit-backface-visibility:hidden;backface-visibility:hidden;transition:box-shadow .3s ease;}
 .face.front{position:relative;padding:20px 18px 16px;}
 .face.front::before{content:"";position:absolute;inset:0 0 auto 0;height:120px;background:var(--soft);opacity:.7;-webkit-mask:linear-gradient(#000,transparent);mask:linear-gradient(#000,transparent);pointer-events:none;}
-.face.back{position:absolute;inset:0;transform:rotateY(180deg);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:10px;padding:22px;background:linear-gradient(160deg,var(--acc),#0c3b1f);color:#fff;}
-.back-kanji{font-family:'Mochiy Pop One';font-size:60px;line-height:1;text-shadow:0 4px 12px rgba(0,0,0,.3);}
+.face.back{position:absolute;inset:0;transform:rotateY(180deg);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:9px;padding:22px;background:linear-gradient(160deg,var(--acc),#0c3b1f);color:#fff;}
+.back-kanji{font-family:'Mochiy Pop One';font-size:56px;line-height:1;text-shadow:0 4px 12px rgba(0,0,0,.3);}
 .back-cry{font-family:'Baloo 2';font-weight:800;font-size:21px;line-height:1.15;}
+.back-rep{font-family:'Baloo 2';font-weight:700;font-size:12.5px;opacity:.92;}
 .back-belt{font-family:'Baloo 2';font-weight:800;font-size:12px;background:rgba(255,255,255,.22);padding:5px 13px;border-radius:999px;}
+.fighter.spot .face{box-shadow:0 0 0 4px var(--acc), var(--shadow);}
 .flip-btn{margin-top:12px;width:100%;min-height:44px;border:none;border-radius:var(--r-md);background:var(--soft);color:var(--acc);font-family:'Baloo 2';font-weight:800;font-size:13.5px;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:filter .12s ease;}
 .flip-btn:active{filter:brightness(.95);}
 .flip-btn.is-back{width:auto;background:rgba(255,255,255,.22);color:#fff;padding:10px 18px;}
@@ -144,11 +147,14 @@ body{
 .belt .strap{position:relative;height:18px;flex:1;border-radius:6px;background:var(--acc);box-shadow:inset 0 -3px 0 rgba(0,0,0,.18), inset 0 2px 0 rgba(255,255,255,.25);}
 .belt .knot{width:26px;height:26px;border-radius:7px;flex:none;background:var(--acc);box-shadow:inset 0 -3px 0 rgba(0,0,0,.2), inset 0 2px 0 rgba(255,255,255,.3);transform:rotate(45deg);}
 .belt .label{font-family:'Baloo 2';font-weight:700;font-size:12px;color:var(--acc);white-space:nowrap;}
-.fighter .stats{display:flex;gap:8px;margin-top:14px;}
+.rep{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:13px;background:var(--soft);color:var(--green-deep);font-weight:700;font-size:12.5px;padding:8px 12px;border-radius:12px;text-align:center;}
+.rep svg{width:14px;height:14px;color:var(--acc);flex:none;}
+.rep b{color:var(--acc);font-family:'Baloo 2';font-weight:800;}
+.fighter .stats{display:flex;gap:8px;margin-top:12px;}
 .stat{flex:1;text-align:center;background:var(--soft);border-radius:var(--r-sm);padding:9px 4px;}
 .stat b{display:block;font-family:'Baloo 2';font-weight:800;font-size:20px;color:var(--ink);line-height:1;}
 .stat span{font-size:10.5px;font-weight:700;color:var(--acc);text-transform:uppercase;letter-spacing:.4px;}
-.cheer-btn{margin-top:15px;width:100%;display:flex;align-items:center;justify-content:center;gap:9px;min-height:50px;border:none;border-radius:var(--r-md);cursor:pointer;background:var(--acc);color:#fff;font-family:'Baloo 2';font-weight:800;font-size:16px;box-shadow:0 10px 18px -8px var(--acc);transition:transform .12s ease, filter .12s ease;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
+.cheer-btn{margin-top:13px;width:100%;display:flex;align-items:center;justify-content:center;gap:9px;min-height:50px;border:none;border-radius:var(--r-md);cursor:pointer;background:var(--acc);color:#fff;font-family:'Baloo 2';font-weight:800;font-size:16px;box-shadow:0 10px 18px -8px var(--acc);transition:transform .12s ease, filter .12s ease;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
 .cheer-btn:hover{filter:brightness(1.06);}
 .cheer-btn:active{transform:scale(.96);}
 .cheer-btn:focus-visible{outline:none;box-shadow:0 10px 18px -8px var(--acc),0 0 0 4px #fff,0 0 0 7px var(--acc);}
@@ -241,9 +247,15 @@ footer .made{margin-top:6px;color:var(--gold-deep);font-family:'Baloo 2';}
 .lightbox img{max-width:100%;max-height:84vh;border-radius:18px;border:4px solid #fff;box-shadow:0 20px 50px rgba(0,0,0,.5);}
 .lb-close{position:absolute;top:calc(14px + env(safe-area-inset-top));right:16px;width:46px;height:46px;border-radius:50%;border:none;background:#fff;color:var(--green-deep);font-size:20px;font-weight:800;cursor:pointer;box-shadow:var(--shadow);}
 
-/* ===== BOTÓN SONIDO ===== */
-.soundbtn{position:fixed;left:16px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:35;width:52px;height:52px;border-radius:50%;border:none;cursor:pointer;background:#fff;box-shadow:var(--shadow);font-size:22px;display:flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent;transition:transform .12s ease;}
+/* ===== CONTROLES FLOTANTES (música + sonido) ===== */
+.musicbtn{position:fixed;left:16px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:35;width:52px;height:52px;border-radius:50%;border:none;cursor:pointer;background:#fff;box-shadow:var(--shadow);font-size:22px;color:var(--green-strong);display:flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent;transition:transform .12s ease,background .2s ease;}
+.musicbtn:active{transform:scale(.9);}
+.musicbtn.playing{background:var(--green);color:#fff;}
+.musicbtn.invite{animation:invitePulse 1.7s ease-in-out infinite;}
+@keyframes invitePulse{0%,100%{box-shadow:var(--shadow);}50%{box-shadow:0 0 0 9px rgba(31,166,75,.22),var(--shadow);}}
+.soundbtn{position:fixed;left:16px;bottom:calc(78px + env(safe-area-inset-bottom));z-index:35;width:52px;height:52px;border-radius:50%;border:none;cursor:pointer;background:#fff;box-shadow:var(--shadow);font-size:21px;display:flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent;transition:transform .12s ease;}
 .soundbtn:active{transform:scale(.9);}
+#ytWrap{position:fixed;left:-9999px;top:0;width:240px;height:135px;opacity:.001;pointer-events:none;}
 
 @media (prefers-reduced-motion: reduce){
   *{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important;scroll-behavior:auto;}
@@ -275,7 +287,7 @@ footer .made{margin-top:6px;color:var(--gold-deep);font-family:'Baloo 2';}
 
   <!-- ============ HERO ============ -->
   <section class="hero">
-    <div class="logo-card"><img src="img/logo.png" alt="Logo de la Liga Antioqueña de KarateDo" /></div>
+    <div class="logo-card" id="logoCard" title="¡Tócame!"><img src="img/logo.png" alt="Logo de la Liga Antioqueña de KarateDo" /></div>
     <div class="kanji-top" aria-hidden="true">必勝</div>
     <h1 id="heroTitle" aria-label="Condenados al éxito">Condenados al éxito</h1>
     <span class="motto">Por un ser humano mejor</span>
@@ -292,12 +304,7 @@ footer .made{margin-top:6px;color:var(--gold-deep);font-family:'Baloo 2';}
       <span class="tag">¡Vamos equipo! 💚</span>
     </div>
 
-    <div class="names-strip" aria-hidden="true">
-      <span class="name-chip" style="background:var(--c-sara)">Sara</span>
-      <span class="name-chip" style="background:var(--c-coscu)">Coscu</span>
-      <span class="name-chip" style="background:var(--c-pani)">Paniagua</span>
-      <span class="name-chip" style="background:var(--c-dani)">Daniel</span>
-    </div>
+    <div class="names-strip" id="names"></div>
 
     <div class="peek" id="peek"></div>
 
@@ -314,7 +321,7 @@ footer .made{margin-top:6px;color:var(--gold-deep);font-family:'Baloo 2';}
     <div class="sec-title">
       <div class="eyebrow">私たちの戦士</div>
       <h2>Nuestros 4 guerreros</h2>
-      <p>Tócales la foto para ver su grito de guerra ⚔️</p>
+      <p>Cada uno representa a su sector 🏡 — tócales la foto ⚔️</p>
     </div>
     <div class="team" id="team"></div>
   </section>
@@ -381,19 +388,24 @@ footer .made{margin-top:6px;color:var(--gold-deep);font-family:'Baloo 2';}
   <img id="lightboxImg" alt="" />
 </div>
 
-<button class="soundbtn" id="soundBtn" aria-pressed="false" aria-label="Activar sonido">🔇</button>
+<!-- ===== CONTROLES ===== -->
+<button class="soundbtn" id="soundBtn" aria-pressed="false" aria-label="Activar efectos de sonido">🔇</button>
+<button class="musicbtn invite" id="musicBtn" aria-label="Reproducir música del equipo"><span id="musicIcon">♫</span></button>
 
 <button class="totop" id="toTop" aria-label="Volver arriba">
   <svg viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V6M6 12l6-6 6 6"/></svg>
 </button>
 
+<!-- reproductor de música oculto -->
+<div id="ytWrap" aria-hidden="true"><div id="ytPlayer"></div></div>
+
 <script>
 /* ============================ DATOS ============================ */
 const TEAM = [
-  {key:'sara', name:'Sara', photo:'img/sara.png', animal:'cat', acc:'var(--c-sara)', soft:'var(--c-sara-soft)', belt:'Cinturón rosa', tagline:'Veloz y con corazón de campeona', kanji:'風', cry:'¡Veloz como el viento!', s1:['98','Espíritu'], s2:['100','Garra']},
-  {key:'coscu', name:'Coscu', photo:'img/coscu.png', animal:'bear', acc:'var(--c-coscu)', soft:'var(--c-coscu-soft)', belt:'Cinturón azul', tagline:'Fuerte, noble y muy valiente', kanji:'力', cry:'¡Fuerza imparable!', s1:['97','Fuerza'], s2:['99','Técnica']},
-  {key:'paniagua', name:'Paniagua', photo:'img/paniagua.png', animal:'dog', acc:'var(--c-pani)', soft:'var(--c-pani-soft)', belt:'Cinturón naranja', tagline:'Alegre, leal y siempre da más', kanji:'熱', cry:'¡Corazón ardiente!', s1:['96','Energía'], s2:['100','Carisma']},
-  {key:'daniel', name:'Daniel', photo:'img/daniel.png', animal:'bunny', acc:'var(--c-dani)', soft:'var(--c-dani-soft)', belt:'Cinturón morado', tagline:'Tranquilo, listo y certero', kanji:'技', cry:'¡Golpe certero!', s1:['99','Enfoque'], s2:['98','Precisión']},
+  {key:'sara', name:'Sara', photo:'img/sara.png', animal:'cat', acc:'var(--c-sara)', soft:'var(--c-sara-soft)', belt:'Cinturón rosa', tagline:'Veloz y con corazón de campeona', rep:'Parques de San Pablo', kanji:'風', cry:'¡Veloz como el viento!', s1:['98','Espíritu'], s2:['100','Garra']},
+  {key:'coscu', name:'Coscu', photo:'img/coscu.png', animal:'bear', acc:'var(--c-coscu)', soft:'var(--c-coscu-soft)', belt:'Cinturón azul', tagline:'Fuerte, noble y muy valiente', rep:'San Fernando La Raya', kanji:'力', cry:'¡Fuerza imparable!', s1:['97','Fuerza'], s2:['99','Técnica']},
+  {key:'paniagua', name:'Paniagua', photo:'img/paniagua.png', animal:'dog', acc:'var(--c-pani)', soft:'var(--c-pani-soft)', belt:'Cinturón naranja', tagline:'Alegre, leal y siempre da más', rep:'Reservas del Sur', kanji:'熱', cry:'¡Corazón ardiente!', s1:['96','Energía'], s2:['100','Carisma']},
+  {key:'daniel', name:'Daniel', photo:'img/daniel.png', animal:'bunny', acc:'var(--c-dani)', soft:'var(--c-dani-soft)', belt:'Cinturón morado', tagline:'Tranquilo, listo y certero', rep:'Guayabalía Etapa 6', kanji:'技', cry:'¡Golpe certero!', s1:['99','Enfoque'], s2:['98','Precisión']},
 ];
 const GALLERY = [
   {src:'img/action1.png', cap:'Coscu en competencia', medal:'🥇 Karate', wide:true},
@@ -460,9 +472,12 @@ function spirit(animal,c,d){
   </svg>`;
 }
 const heartIcon = `<svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 21s-7.5-4.9-10-9.3C.2 8.1 2 4.5 5.4 4.5c2 0 3.4 1.1 4.3 2.4l.7 1 .7-1C12 5.6 13.4 4.5 15.4 4.5 18.8 4.5 20.6 8.1 19 11.7 16.5 16.1 12 21 12 21z"/></svg>`;
+const pinIcon = `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5z"/></svg>`;
 
 /* ============================ RENDER ============================ */
 const colorOf = {cat:['#ff8fb1','#e23a66'], bear:['#7ec8e3','#1d7fbf'], dog:['#9bd9a0','#2f9e54'], bunny:['#c3aef0','#6a4ce0']};
+
+document.getElementById('names').innerHTML = TEAM.map(f=>`<button class="name-chip" type="button" data-go="${f.key}" style="background:${f.acc}">${f.name}</button>`).join('');
 
 document.getElementById('peek').innerHTML = TEAM.map(f=>{const[c,d]=colorOf[f.animal];return `<button class="peek-m" type="button" aria-label="Anima a ${f.name}"><span class="bubble" aria-hidden="true"></span>${mascot(f.animal,c,d)}</button>`;}).join('');
 
@@ -486,6 +501,7 @@ document.getElementById('team').innerHTML = TEAM.map((f,i)=>{
             <div class="belt"><span class="knot"></span><span class="strap"></span><span class="label">${f.belt}</span></div>
           </div>
         </div>
+        <div class="rep">${pinIcon} Representa a <b>${f.rep}</b></div>
         <div class="stats">
           <div class="stat"><b data-count="${f.s1[0]}">0</b><span>${f.s1[1]}</span></div>
           <div class="stat"><b data-count="${f.s2[0]}">0</b><span>${f.s2[1]}</span></div>
@@ -499,6 +515,7 @@ document.getElementById('team').innerHTML = TEAM.map((f,i)=>{
       <div class="face back">
         <div class="back-kanji" aria-hidden="true">${f.kanji}</div>
         <div class="back-cry">${f.cry}</div>
+        <div class="back-rep">📍 ${f.rep}</div>
         <div class="back-belt">${f.belt}</div>
         <button class="flip-btn is-back" data-flip type="button">↩︎ Volver</button>
       </div>
@@ -571,15 +588,41 @@ function medalRain(){
 function screenFlash(){ if(reduce)return; const f=document.createElement('div');f.className='flash';document.body.appendChild(f);f.addEventListener('animationend',()=>f.remove()); }
 function celebrate(){ screenFlash(); confettiBurst(innerWidth/2,innerHeight*0.32,{count:60,power:280}); confettiBurst(innerWidth*0.18,innerHeight*0.5,{count:28}); confettiBurst(innerWidth*0.82,innerHeight*0.5,{count:28}); kiai(); }
 
-/* ---- sonido opcional ---- */
+/* ---- sonido opcional (efectos) ---- */
 let audioCtx=null, soundOn = localStorage.getItem('sound')==='1';
 function ensureAudio(){ if(!audioCtx){ try{audioCtx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){} } }
 function blip(freq,dur,type,vol){ if(!soundOn)return; ensureAudio(); if(!audioCtx)return; freq=freq||600;dur=dur||0.08;type=type||'sine';vol=vol||0.12; const t=audioCtx.currentTime,o=audioCtx.createOscillator(),g=audioCtx.createGain(); o.type=type;o.frequency.setValueAtTime(freq,t); g.gain.setValueAtTime(vol,t); g.gain.exponentialRampToValueAtTime(0.0001,t+dur); o.connect(g).connect(audioCtx.destination); o.start(t);o.stop(t+dur); }
 function kiai(){ if(!soundOn)return; blip(300,0.18,'sawtooth',0.16); setTimeout(()=>blip(540,0.12,'square',0.1),70); }
 const soundBtn=document.getElementById('soundBtn');
-function updSound(){ soundBtn.textContent=soundOn?'🔊':'🔇'; soundBtn.setAttribute('aria-pressed',soundOn?'true':'false'); soundBtn.setAttribute('aria-label',soundOn?'Silenciar sonido':'Activar sonido'); }
+function updSound(){ soundBtn.textContent=soundOn?'🔊':'🔇'; soundBtn.setAttribute('aria-pressed',soundOn?'true':'false'); soundBtn.setAttribute('aria-label',soundOn?'Silenciar efectos':'Activar efectos de sonido'); }
 updSound();
 soundBtn.addEventListener('click',()=>{ soundOn=!soundOn; localStorage.setItem('sound',soundOn?'1':'0'); if(soundOn){ ensureAudio(); if(audioCtx&&audioCtx.state==='suspended')audioCtx.resume(); blip(720,0.1,'sine',0.14);} updSound(); });
+
+/* ---- MÚSICA DE FONDO (YouTube) ---- */
+let ytPlayer=null, ytReady=false, musicOn=false, musicStarted=false, musicWantStart=false;
+window.onYouTubeIframeAPIReady=function(){
+  ytPlayer=new YT.Player('ytPlayer',{
+    width:'240',height:'135',videoId:'ExCIp6TOnJw',
+    playerVars:{playsinline:1,rel:0,modestbranding:1},
+    events:{
+      'onReady':function(){ ytReady=true; try{ytPlayer.setVolume(45);}catch(e){} if(musicWantStart) startMusic(); },
+      'onStateChange':function(e){
+        if(e.data===YT.PlayerState.ENDED){ try{ytPlayer.seekTo(0);ytPlayer.playVideo();}catch(x){} }
+        if(e.data===YT.PlayerState.PLAYING){ musicOn=true; updMusic(); }
+        if(e.data===YT.PlayerState.PAUSED){ musicOn=false; updMusic(); }
+      }
+    }
+  });
+};
+(function(){ const t=document.createElement('script'); t.src='https://www.youtube.com/iframe_api'; document.head.appendChild(t); })();
+function startMusic(){ if(!ytReady){ musicWantStart=true; return; } try{ ytPlayer.setVolume(45); ytPlayer.playVideo(); }catch(e){} }
+function pauseMusic(){ if(ytReady){ try{ ytPlayer.pauseVideo(); }catch(e){} } }
+const musicBtn=document.getElementById('musicBtn'), musicIcon=document.getElementById('musicIcon');
+function updMusic(){ musicBtn.classList.toggle('playing',musicOn); musicBtn.classList.toggle('invite',!musicStarted && !musicOn); musicIcon.textContent=musicOn?'⏸':'♫'; musicBtn.setAttribute('aria-label',musicOn?'Pausar música':'Reproducir música del equipo'); }
+musicBtn.addEventListener('click',()=>{ musicStarted=true; if(musicOn){ pauseMusic(); } else { startMusic(); } updMusic(); });
+function firstGestureMusic(){ if(musicStarted)return; musicStarted=true; startMusic(); updMusic(); }
+addEventListener('pointerdown',firstGestureMusic,{passive:true});
+updMusic();
 
 /* ---- contador animado ---- */
 function countUp(el){
@@ -631,6 +674,31 @@ tap.addEventListener('click',()=>{const r=tap.getBoundingClientRect();const cx=r
 document.addEventListener('click',(e)=>{ const f=e.target.closest('[data-flip]'); if(!f)return; const card=f.closest('.fighter'); if(!card)return; card.classList.toggle('flipped'); blip(card.classList.contains('flipped')?720:480,0.07); });
 document.querySelectorAll('.ava[role="button"]').forEach(a=>a.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault();a.click();} }));
 
+/* ---- inclinación 3D de tarjetas (parallax) ---- */
+if(!reduce){
+  document.querySelectorAll('.fighter').forEach(card=>{
+    const inner=card.querySelector('.flip-inner');
+    card.addEventListener('pointermove',(e)=>{
+      if(card.classList.contains('flipped'))return;
+      const r=card.getBoundingClientRect();
+      const px=(e.clientX-r.left)/r.width-0.5, py=(e.clientY-r.top)/r.height-0.5;
+      inner.style.setProperty('--ry',(px*9).toFixed(1)+'deg');
+      inner.style.setProperty('--rx',(-py*9).toFixed(1)+'deg');
+    });
+    card.addEventListener('pointerleave',()=>{ inner.style.setProperty('--rx','0deg'); inner.style.setProperty('--ry','0deg'); });
+  });
+}
+
+/* ---- chips de nombres: ir a la tarjeta ---- */
+document.querySelectorAll('.name-chip[data-go]').forEach(ch=>{
+  ch.addEventListener('click',()=>{
+    const card=document.querySelector('.fighter[data-key="'+ch.dataset.go+'"]'); if(!card)return;
+    card.scrollIntoView({behavior:reduce?'auto':'smooth',block:'center'});
+    card.classList.add('spot'); setTimeout(()=>card.classList.remove('spot'),1300);
+    blip(620,0.05);
+  });
+});
+
 /* ---- mascotas que saltan y hablan ---- */
 const mPhrases=['¡Osu!','¡Kiai!','¡Vamos!','¡Tú puedes!','¡Ganbatte!','¡A ganar!'];
 document.querySelectorAll('.peek-m').forEach(b=>{
@@ -642,6 +710,14 @@ document.querySelectorAll('.peek-m').forEach(b=>{
     clearTimeout(b._sT); b._sT=setTimeout(()=>b.classList.remove('say'),1300);
     setTimeout(()=>b.classList.remove('jump'),560);
   });
+});
+
+/* ---- easter egg: tocar el logo ---- */
+const logoCard=document.getElementById('logoCard');
+if(logoCard) logoCard.addEventListener('click',()=>{
+  confettiBurst(innerWidth/2, 150, {count:42, power:230, emojis:['🥋','💚','⭐','🥇','✨']});
+  document.querySelectorAll('.peek-m').forEach((b,i)=>{ setTimeout(()=>{ b.classList.remove('jump');void b.offsetWidth;b.classList.add('jump'); setTimeout(()=>b.classList.remove('jump'),560); }, i*110); });
+  blip(700,0.09);
 });
 
 /* ---- galería: lightbox ---- */
