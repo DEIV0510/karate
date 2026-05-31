@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="theme-color" content="#1fa64b" />
 <title>Condenados al éxito · Liga Antioqueña de KarateDo 🥋🌿</title>
-<meta name="description" content="Apoyo con todo el corazón a Sara, Coscu, Paniagua y Daniel — Liga Antioqueña de KarateDo. ¡Por un ser humano mejor! Orgullo paisa." />
+<meta name="description" content="Apoyo con todo el corazón a Sara, Coscu, Isabella y Daniel — Liga Antioqueña de KarateDo. ¡Por un ser humano mejor! Orgullo paisa." />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,10 +19,10 @@
   --green:#1fa64b; --green-strong:#15803d; --green-deep:#0c3b1f;
   --black:#16191b; --ink:#11321d; --ink-soft:#5b7a63;
   --cream:#eef8e8; --paper:#ffffff; --gold:#ffc02e; --gold-deep:#d99300;
-  --c-sara:#e23a66;  --c-sara-soft:#ffe6ec;
-  --c-coscu:#1d7fbf; --c-coscu-soft:#e0f0fa;
-  --c-pani:#c2700f;  --c-pani-soft:#fbecd0;
-  --c-dani:#6a4ce0;  --c-dani-soft:#eae4ff;
+  --c-sara:#1f9a46;  --c-sara-soft:#dcf3e1;   /* verde */
+  --c-coscu:#d2691e; --c-coscu-soft:#fbe7cf;  /* naranja */
+  --c-pani:#7c4dd6;  --c-pani-soft:#ece2fb;   /* violeta (Isabella) */
+  --c-dani:#b85410;  --c-dani-soft:#f6e0cf;   /* naranja (Daniel) */
   --r-lg:30px; --r-md:22px; --r-sm:14px;
   --shadow:0 18px 40px -18px rgba(12,59,31,.45);
   --shadow-sm:0 10px 22px -12px rgba(12,59,31,.4);
@@ -274,10 +274,48 @@ footer .made{margin-top:6px;color:var(--gold-deep);font-family:'Baloo 2';}
 .soundbtn:active{transform:scale(.9);}
 #ytWrap{position:fixed;left:-9999px;top:0;width:240px;height:135px;opacity:.001;pointer-events:none;}
 
+/* ===== CARTELERA / FIGHT CARD ===== */
+.fightcard{margin-top:14px;border-radius:var(--r-lg);padding:24px 18px 22px;text-align:center;color:#fff;position:relative;overflow:hidden;box-shadow:var(--shadow);background:radial-gradient(120% 90% at 50% 0%, #19913f 0%, #0c2b17 55%, #0a0f0c 100%);}
+.fightcard::before{content:"⚔";position:absolute;font-size:280px;opacity:.05;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;}
+.fightcard::after{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent 40%,rgba(255,255,255,.08) 50%,transparent 60%);transform:translateX(-100%);animation:fcShine 6s ease-in-out infinite;pointer-events:none;}
+@keyframes fcShine{0%,100%{transform:translateX(-100%);}50%{transform:translateX(100%);}}
+.fc-top{font-family:'Baloo 2';font-weight:800;letter-spacing:3px;font-size:12px;color:var(--gold);position:relative;}
+.fc-title{font-family:'Baloo 2';font-weight:800;font-size:clamp(30px,9vw,44px);line-height:.95;margin-top:4px;position:relative;background:linear-gradient(180deg,#fff,#ffe08a);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+.fc-title span{font-size:.55em;-webkit-text-fill-color:#fff;color:#fff;opacity:.9;}
+.fc-sub{font-family:'Mochiy Pop One';font-size:13px;color:#bfe6c8;margin-top:6px;position:relative;}
+.fc-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px 10px;margin-top:20px;position:relative;}
+.fc-fighter{opacity:0;transform:translateY(16px) scale(.9);}
+.fightcard.in .fc-fighter{opacity:1;transform:none;transition:opacity .5s ease, transform .5s cubic-bezier(.2,.9,.3,1.4);}
+.fightcard.in .fc-fighter:nth-child(2){transition-delay:.08s;}
+.fightcard.in .fc-fighter:nth-child(3){transition-delay:.16s;}
+.fightcard.in .fc-fighter:nth-child(4){transition-delay:.24s;}
+.fc-photo{width:88px;height:88px;margin:0 auto 8px;border-radius:50%;overflow:hidden;border:3px solid var(--acc);box-shadow:0 0 18px -2px var(--acc);}
+.fc-photo img{width:100%;height:100%;object-fit:cover;object-position:center 22%;}
+.fc-name{font-family:'Baloo 2';font-weight:800;font-size:18px;letter-spacing:1px;text-transform:uppercase;}
+.fc-belt{display:inline-block;margin-top:4px;font-family:'Baloo 2';font-weight:800;font-size:11px;background:var(--acc);color:#fff;padding:3px 11px;border-radius:999px;}
+.fc-sede{font-size:11px;opacity:.85;margin-top:5px;}
+.fc-foot{margin-top:20px;font-family:'Baloo 2';font-weight:700;font-size:12px;color:var(--gold);opacity:.92;position:relative;}
+
+/* ===== MURO DE ÁNIMOS ===== */
+.muro{margin-top:30px;}
+.muro-form{display:flex;flex-direction:column;gap:9px;margin-top:14px;background:#fff;border:2px solid #cdeacb;border-radius:var(--r-lg);padding:16px;box-shadow:var(--shadow-sm);}
+.muro-form input,.muro-form textarea{font-family:'Nunito';font-weight:600;font-size:16px;border:2px solid #dcefe0;border-radius:14px;padding:11px 13px;width:100%;color:var(--ink);background:#f7fdf4;}
+.muro-form textarea{min-height:66px;resize:vertical;}
+.muro-form input::placeholder,.muro-form textarea::placeholder{color:#9bb3a1;}
+.muro-form input:focus,.muro-form textarea:focus{outline:none;border-color:var(--green);background:#fff;}
+.muro-form button{min-height:48px;border:none;border-radius:var(--r-md);background:var(--green-strong);color:#fff;font-family:'Baloo 2';font-weight:800;font-size:16px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .12s ease,filter .12s;}
+.muro-form button:hover{filter:brightness(1.05);}
+.muro-form button:active{transform:scale(.97);}
+.muro-wall{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;}
+.note{border-radius:13px;padding:12px 13px;box-shadow:var(--shadow-sm);color:#3a3320;animation:notePop .35s ease;}
+@keyframes notePop{0%{opacity:0;}100%{opacity:1;}}
+.note p{font-weight:700;font-size:13.5px;line-height:1.35;word-break:break-word;}
+.note span{display:block;margin-top:7px;font-family:'Baloo 2';font-weight:800;font-size:12px;color:#6a5a2a;}
+
 @media (prefers-reduced-motion: reduce){
   *{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important;scroll-behavior:auto;}
   .petal,.sparkle,.confetti{display:none !important;}
-  .fighter,.value,.gphoto{opacity:1 !important;transform:none !important;}
+  .fighter,.value,.gphoto,.fc-fighter{opacity:1 !important;transform:none !important;}
   .reel-track,.hero-photo img,.logo-card{transform:none !important;}
 }
 </style>
@@ -310,7 +348,7 @@ footer .made{margin-top:6px;color:var(--gold-deep);font-family:'Baloo 2';}
     <h1 id="heroTitle" aria-label="Condenados al éxito">Condenados al éxito</h1>
     <span class="motto">Por un ser humano mejor</span>
 
-    <p class="lead">Todo nuestro apoyo y cariño para <b>Sara</b>, <b>Coscu</b>, <b>Paniagua</b> y <b>Daniel</b> en su competencia de Karate 🥋</p>
+    <p class="lead">Todo nuestro apoyo y cariño para <b>Sara</b>, <b>Coscu</b>, <b>Isabella</b> y <b>Daniel</b> en su competencia de Karate 🥋</p>
 
     <span class="paisa">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20l5-9 4 5 3-5 6 9z"/></svg>
@@ -318,7 +356,7 @@ footer .made{margin-top:6px;color:var(--gold-deep);font-family:'Baloo 2';}
     </span>
 
     <div class="hero-photo">
-      <div class="hp-frame"><img src="img/todos2.png" alt="Sara, Coscu, Paniagua, Daniel y el equipo juntos" /></div>
+      <div class="hp-frame"><img src="img/todos2.png" alt="Sara, Coscu, Isabella, Daniel y el equipo juntos" /></div>
       <span class="tag">¡Vamos equipo! 💚</span>
     </div>
 
@@ -342,6 +380,17 @@ footer .made{margin-top:6px;color:var(--gold-deep);font-family:'Baloo 2';}
       <p>Cada uno representa a su sector 🏡 — tócales la foto ⚔️</p>
     </div>
     <div class="team" id="team"></div>
+  </section>
+
+  <div class="wave" aria-hidden="true">❀</div>
+
+  <!-- ============ CARTELERA / FIGHT CARD ============ -->
+  <section class="fightcard" id="fightcard">
+    <div class="fc-top">★ CARTELERA OFICIAL ★</div>
+    <h2 class="fc-title">TEAM ANTIOQUIA<br><span>vs. el mundo</span></h2>
+    <div class="fc-sub">必勝 · ¡El gran día se acerca!</div>
+    <div class="fc-grid" id="fcGrid"></div>
+    <div class="fc-foot">Liga Antioqueña de KarateDo · 4 guerreros, 1 sueño 🥋</div>
   </section>
 
   <div class="wave" aria-hidden="true">❀</div>
@@ -376,6 +425,21 @@ footer .made{margin-top:6px;color:var(--gold-deep);font-family:'Baloo 2';}
     </div>
   </section>
 
+  <!-- ============ MURO DE ÁNIMOS ============ -->
+  <section class="muro">
+    <div class="sec-title">
+      <div class="eyebrow">応援メッセージ</div>
+      <h2>Muro de ánimos</h2>
+      <p>Déjales un mensaje y queda pegado para siempre 💬</p>
+    </div>
+    <form class="muro-form" id="muroForm">
+      <input id="muroName" type="text" maxlength="22" placeholder="Tu nombre (opcional)" aria-label="Tu nombre" autocomplete="name" />
+      <textarea id="muroMsg" maxlength="140" placeholder="Escribe tu mensaje de ánimo para el equipo..." aria-label="Tu mensaje de ánimo" required></textarea>
+      <button type="submit">Pegar mi ánimo 💚</button>
+    </form>
+    <div class="muro-wall" id="muroWall" aria-live="polite"></div>
+  </section>
+
   <!-- ============ VALORES ============ -->
   <section class="values">
     <div class="sec-title">
@@ -398,7 +462,7 @@ footer .made{margin-top:6px;color:var(--gold-deep);font-family:'Baloo 2';}
     <img src="img/logo.png" alt="Logo Liga Antioqueña de KarateDo" />
     <div class="liga">Liga Antioqueña de KarateDo</div>
     <div>« Por un ser humano mejor »</div>
-    <div class="made">Con todo el cariño para Sara, Coscu, Paniagua &amp; Daniel 🌿</div>
+    <div class="made">Con todo el cariño para Sara, Coscu, Isabella &amp; Daniel 🌿</div>
   </footer>
 
 </div>
@@ -424,10 +488,10 @@ footer .made{margin-top:6px;color:var(--gold-deep);font-family:'Baloo 2';}
 <script>
 /* ============================ DATOS ============================ */
 const TEAM = [
-  {key:'sara', name:'Sara', photo:'img/sara.png', animal:'cat', acc:'var(--c-sara)', soft:'var(--c-sara-soft)', belt:'Cinturón rosa', tagline:'Veloz y con corazón de campeona', rep:'Parques de San Pablo', kanji:'風', cry:'¡Veloz como el viento!', s1:['98','Espíritu'], s2:['100','Garra']},
-  {key:'coscu', name:'Coscu', photo:'img/coscu.png', animal:'bear', acc:'var(--c-coscu)', soft:'var(--c-coscu-soft)', belt:'Cinturón azul', tagline:'Fuerte, noble y muy valiente', rep:'San Fernando La Raya', kanji:'力', cry:'¡Fuerza imparable!', s1:['97','Fuerza'], s2:['99','Técnica']},
-  {key:'paniagua', name:'Paniagua', photo:'img/paniagua.png', animal:'dog', acc:'var(--c-pani)', soft:'var(--c-pani-soft)', belt:'Cinturón naranja', tagline:'Alegre, leal y siempre da más', rep:'Reservas del Sur', kanji:'熱', cry:'¡Corazón ardiente!', s1:['96','Energía'], s2:['100','Carisma']},
-  {key:'daniel', name:'Daniel', photo:'img/daniel.png', animal:'bunny', acc:'var(--c-dani)', soft:'var(--c-dani-soft)', belt:'Cinturón morado', tagline:'Tranquilo, listo y certero', rep:'Guayabalía Etapa 6', kanji:'技', cry:'¡Golpe certero!', s1:['99','Enfoque'], s2:['98','Precisión']},
+  {key:'sara', name:'Sara', photo:'img/sara.png', animal:'cat', acc:'var(--c-sara)', soft:'var(--c-sara-soft)', belt:'Cinturón verde', tagline:'Veloz y con corazón de campeona', rep:'Parques de San Pablo', kanji:'風', cry:'¡Veloz como el viento!', s1:['98','Espíritu'], s2:['100','Garra']},
+  {key:'coscu', name:'Coscu', photo:'img/coscu.png', animal:'bear', acc:'var(--c-coscu)', soft:'var(--c-coscu-soft)', belt:'Cinturón naranja', tagline:'Fuerte, noble y muy valiente', rep:'San Fernando La Raya', kanji:'力', cry:'¡Fuerza imparable!', s1:['97','Fuerza'], s2:['99','Técnica']},
+  {key:'paniagua', name:'Isabella', photo:'img/paniagua.png', animal:'dog', acc:'var(--c-pani)', soft:'var(--c-pani-soft)', belt:'Cinturón violeta', tagline:'Alegre, leal y siempre da más', rep:'Reservas del Sur', kanji:'熱', cry:'¡Corazón ardiente!', s1:['96','Energía'], s2:['100','Carisma']},
+  {key:'daniel', name:'Daniel', photo:'img/daniel.png', animal:'bunny', acc:'var(--c-dani)', soft:'var(--c-dani-soft)', belt:'Cinturón naranja', tagline:'Tranquilo, listo y certero', rep:'Guayabalía Etapa 6', kanji:'技', cry:'¡Golpe certero!', s1:['99','Enfoque'], s2:['98','Precisión']},
 ];
 const GALLERY = [
   // karate / tatami (destacadas con medalla)
@@ -442,11 +506,11 @@ const GALLERY = [
   {src:'img/hombres2.png', cap:'Los chicos', tags:['grupo'], c:'var(--green)'},
   // combos
   {src:'img/danielcoscu1.png', cap:'Daniel & Coscu', tags:['daniel','coscu','grupo'], c:'var(--green)'},
-  {src:'img/paniaguaycoscu1.png', cap:'Paniagua & Coscu', tags:['paniagua','coscu','grupo'], c:'var(--green)'},
-  {src:'img/sarapaniagua1.png', cap:'Sara & Paniagua', tags:['sara','paniagua','grupo'], c:'var(--green)'},
-  {src:'img/sarapaniagua2.png', cap:'Sara & Paniagua', tags:['sara','paniagua','grupo'], c:'var(--green)'},
-  {src:'img/sarapaniagua3.png', cap:'Sara & Paniagua', tags:['sara','paniagua','grupo'], c:'var(--green)'},
-  {src:'img/sarapaniagua4.png', cap:'Sara & Paniagua', tags:['sara','paniagua','grupo'], c:'var(--green)'},
+  {src:'img/paniaguaycoscu1.png', cap:'Isabella & Coscu', tags:['paniagua','coscu','grupo'], c:'var(--green)'},
+  {src:'img/sarapaniagua1.png', cap:'Sara & Isabella', tags:['sara','paniagua','grupo'], c:'var(--green)'},
+  {src:'img/sarapaniagua2.png', cap:'Sara & Isabella', tags:['sara','paniagua','grupo'], c:'var(--green)'},
+  {src:'img/sarapaniagua3.png', cap:'Sara & Isabella', tags:['sara','paniagua','grupo'], c:'var(--green)'},
+  {src:'img/sarapaniagua4.png', cap:'Sara & Isabella', tags:['sara','paniagua','grupo'], c:'var(--green)'},
   // Sara
   {src:'img/sara1.png', cap:'Sara', tags:['sara'], c:'var(--c-sara)'},
   {src:'img/sara2.png', cap:'Sara', tags:['sara'], c:'var(--c-sara)'},
@@ -459,9 +523,9 @@ const GALLERY = [
   {src:'img/coscu4.png', cap:'Coscu', tags:['coscu'], c:'var(--c-coscu)'},
   {src:'img/coscu5.png', cap:'Coscu', tags:['coscu'], c:'var(--c-coscu)'},
   {src:'img/coscu27.png', cap:'Coscu', tags:['coscu'], c:'var(--c-coscu)'},
-  // Paniagua
-  {src:'img/paniagua1.png', cap:'Paniagua', tags:['paniagua'], c:'var(--c-pani)'},
-  {src:'img/paniagua2.png', cap:'Paniagua', tags:['paniagua'], c:'var(--c-pani)'},
+  // Isabella
+  {src:'img/paniagua1.png', cap:'Isabella', tags:['paniagua'], c:'var(--c-pani)'},
+  {src:'img/paniagua2.png', cap:'Isabella', tags:['paniagua'], c:'var(--c-pani)'},
   // Daniel
   {src:'img/Daniel1.png', cap:'Daniel', tags:['daniel'], c:'var(--c-dani)'},
   {src:'img/daniel2.png', cap:'Daniel', tags:['daniel'], c:'var(--c-dani)'},
@@ -473,7 +537,7 @@ const GAL_TABS=[
   {key:'all', label:'Todos', c:'var(--green)'},
   {key:'sara', label:'Sara', c:'var(--c-sara)'},
   {key:'coscu', label:'Coscu', c:'var(--c-coscu)'},
-  {key:'paniagua', label:'Paniagua', c:'var(--c-pani)'},
+  {key:'paniagua', label:'Isabella', c:'var(--c-pani)'},
   {key:'daniel', label:'Daniel', c:'var(--c-dani)'},
   {key:'grupo', label:'El grupo', c:'var(--green-deep)'},
 ];
@@ -616,6 +680,47 @@ document.getElementById('galTabs').addEventListener('click',(e)=>{ const b=e.tar
 
 document.getElementById('values').innerHTML = VALUES.map(v=>`
   <div class="value"><div class="ko" style="background:${v.c}">${v.ko}</div><h4>${v.name}</h4><p>${v.desc}</p></div>`).join('');
+
+/* ---- cartelera / fight card ---- */
+document.getElementById('fcGrid').innerHTML = TEAM.map(f=>`
+  <div class="fc-fighter" style="--acc:${f.acc}">
+    <div class="fc-photo"><img src="${f.photo}" alt="${f.name}" loading="lazy" decoding="async"></div>
+    <div class="fc-name">${f.name}</div>
+    <div class="fc-belt">${f.belt}</div>
+    <div class="fc-sede">📍 ${f.rep}</div>
+  </div>`).join('');
+
+/* ---- muro de ánimos ---- */
+const MURO_SEED=[
+  {n:'Mamá', m:'¡Lo van a hacer increíble, los amo! 💚'},
+  {n:'El sensei', m:'Confíen en su entrenamiento. ¡Osu! 🥋'},
+  {n:'La familia', m:'Pase lo que pase, ya son campeones 🥇'},
+  {n:'Antioquia', m:'¡Con todo, paisas! 🔥'},
+];
+const muroNoteColors=['#fff3b0','#ffd6e0','#d6f5dd','#d9ecff','#ece2fb','#ffe4c7'];
+function muroEsc(s){ return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function muroLoad(){ try{ const v=JSON.parse(localStorage.getItem('muro_msgs')); return Array.isArray(v)&&v.length?v:MURO_SEED.slice(); }catch(e){ return MURO_SEED.slice(); } }
+let muroMsgs=muroLoad();
+const muroWall=document.getElementById('muroWall');
+function muroRender(){
+  muroWall.innerHTML=muroMsgs.map((x,i)=>{
+    const rot=((i*53)%7)-3, col=muroNoteColors[i%muroNoteColors.length];
+    return `<div class="note" style="background:${col};transform:rotate(${rot}deg)"><p>${muroEsc(x.m)}</p><span>— ${muroEsc(x.n)||'Anónimo'}</span></div>`;
+  }).join('');
+}
+muroRender();
+document.getElementById('muroForm').addEventListener('submit',(e)=>{
+  e.preventDefault();
+  const msg=document.getElementById('muroMsg').value.trim(); if(!msg) return;
+  const name=document.getElementById('muroName').value.trim();
+  muroMsgs.unshift({n:name, m:msg});
+  try{ localStorage.setItem('muro_msgs', JSON.stringify(muroMsgs.slice(0,80))); }catch(err){}
+  muroRender();
+  e.target.reset();
+  const r=e.target.getBoundingClientRect();
+  if(typeof confettiBurst==='function') confettiBurst(r.left+r.width/2, r.top+20, {count:26, power:200});
+  if(typeof blip==='function') blip(720,0.08);
+});
 
 /* ========================= INTERACCIÓN ========================= */
 const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -815,7 +920,7 @@ addEventListener('keydown',(e)=>{ if(e.key==='Escape')closeLb(); });
 
 /* ---- reveals + contadores + medallas ---- */
 const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');if(e.target.classList.contains('fighter'))e.target.querySelectorAll('b[data-count]').forEach(countUp);io.unobserve(e.target);}});},{threshold:0.12});
-document.querySelectorAll('.fighter,.value,.gphoto').forEach((el,i)=>{el.style.transitionDelay=(i%4*0.06)+'s';io.observe(el);});
+document.querySelectorAll('.fighter,.value,.gphoto,.fightcard').forEach((el,i)=>{el.style.transitionDelay=(i%4*0.06)+'s';io.observe(el);});
 const msg=document.querySelector('.message');
 if(msg){const mio=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){medalRain();mio.disconnect();}});},{threshold:0.4});mio.observe(msg);}
 
