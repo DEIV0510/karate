@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="theme-color" content="#1fa64b" />
-<title>¡Ganbatte! · Liga Antioqueña de KarateDo 🥋🌿</title>
+<title>Condenados al éxito · Liga Antioqueña de KarateDo 🥋🌿</title>
 <meta name="description" content="Apoyo con todo el corazón a Sara, Coscu, Paniagua y Daniel — Liga Antioqueña de KarateDo. ¡Por un ser humano mejor! Orgullo paisa." />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -87,11 +87,23 @@ body{
 
 .kanji-top{font-family:'Mochiy Pop One';font-size:26px;color:var(--green);letter-spacing:10px;text-indent:10px;margin:8px 0 2px;}
 .hero h1{
-  font-family:'Baloo 2';font-weight:800;font-size:clamp(42px,14.5vw,74px);line-height:.96;letter-spacing:-.5px;
-  background:linear-gradient(135deg,#27c258 0%, #15803d 45%, #0c3b1f 100%);
-  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
-  filter:drop-shadow(0 5px 0 rgba(255,255,255,.9));
+  font-family:'Baloo 2';font-weight:800;font-size:clamp(34px,11.5vw,58px);line-height:1.04;letter-spacing:-.5px;
+  display:flex;flex-wrap:wrap;justify-content:center;align-items:flex-end;gap:0 .26em;margin-top:2px;color:var(--green-deep);
 }
+.hero h1.plain{display:block;background:linear-gradient(135deg,#27c258,#15803d 45%,#0c3b1f);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 5px 0 rgba(255,255,255,.9));}
+.hero h1 .ti-word{display:inline-flex;}
+.ch-wave{display:inline-block;}
+.hero h1.waving .ch-wave{animation:tiWave 2.6s ease-in-out infinite;}
+.ch{
+  display:inline-block;
+  background:linear-gradient(135deg,#27c258 0%,#15803d 45%,#0c3b1f 100%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 4px 0 rgba(255,255,255,.85));
+  opacity:0;transform:translateY(42px) scale(.55) rotate(-8deg);
+  animation:tiIn .62s cubic-bezier(.2,.9,.3,1.5) forwards;
+}
+@keyframes tiIn{0%{opacity:0;transform:translateY(42px) scale(.55) rotate(-8deg);}55%{opacity:1;}100%{opacity:1;transform:translateY(0) scale(1) rotate(0);}}
+@keyframes tiWave{0%,55%,100%{transform:translateY(0);}28%{transform:translateY(-12px);}}
 .motto{display:inline-block;margin-top:8px;font-family:'Mochiy Pop One';font-size:13px;color:var(--gold-deep);letter-spacing:.5px;}
 .motto::before,.motto::after{content:"❀";margin:0 7px;color:var(--green);}
 
@@ -252,8 +264,8 @@ footer .made{margin-top:6px;color:var(--gold-deep);font-family:'Baloo 2';}
   <!-- ============ HERO ============ -->
   <section class="hero">
     <div class="logo-card"><img src="img/logo.png" alt="Logo de la Liga Antioqueña de KarateDo" /></div>
-    <div class="kanji-top" aria-hidden="true">頑張れ</div>
-    <h1>¡GANBATTE!</h1>
+    <div class="kanji-top" aria-hidden="true">必勝</div>
+    <h1 id="heroTitle" aria-label="Condenados al éxito">Condenados al éxito</h1>
     <span class="motto">Por un ser humano mejor</span>
 
     <p class="lead">Todo nuestro apoyo y cariño para <b>Sara</b>, <b>Coscu</b>, <b>Paniagua</b> y <b>Daniel</b> en su competencia de Karate 🥋</p>
@@ -478,6 +490,23 @@ document.getElementById('values').innerHTML = VALUES.map(v=>`
 
 /* ========================= INTERACCIÓN ========================= */
 const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* título animado del hero: cada letra entra con resorte y luego ondea */
+(function(){
+  const t=document.getElementById('heroTitle'); if(!t) return;
+  const phrase=t.getAttribute('aria-label')||t.textContent.trim();
+  if(reduce){ t.classList.add('plain'); t.textContent=phrase; return; }
+  let i=0;
+  t.innerHTML=phrase.split(' ').map(w=>{
+    const chars=[...w].map(ch=>{
+      const d=(i*0.05).toFixed(2); i++;
+      return `<span class="ch-wave" style="animation-delay:${d}s"><span class="ch" style="animation-delay:${d}s">${ch}</span></span>`;
+    }).join('');
+    return `<span class="ti-word" aria-hidden="true">${chars}</span>`;
+  }).join('');
+  setTimeout(()=>t.classList.add('waving'), 1150);
+})();
+
 function burstHearts(x,y,n=6,emoji='💚'){
   if(reduce) return;
   for(let i=0;i<n;i++){
