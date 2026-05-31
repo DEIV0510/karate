@@ -164,16 +164,13 @@ body{
 @keyframes pop{0%{transform:scale(1);}40%{transform:scale(1.06);}100%{transform:scale(1);}}
 
 /* ===== GALERÍA ===== */
-.gallery{margin-top:18px;display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-.gphoto{position:relative;border-radius:var(--r-md);overflow:hidden;box-shadow:var(--shadow-sm);border:3px solid #fff;background:#dfeede;opacity:0;transform:translateY(20px) scale(.97);}
-.gphoto.in{opacity:1;transform:none;transition:opacity .5s ease, transform .5s ease;}
-.gphoto img{width:100%;height:100%;object-fit:cover;display:block;aspect-ratio:1/1;cursor:zoom-in;transition:transform .35s ease;}
-.gphoto:hover img{transform:scale(1.05);}
-.gphoto.wide{grid-column:span 2;}
-.gphoto.wide img{aspect-ratio:16/10;}
-.gphoto .cap{position:absolute;left:8px;bottom:8px;right:8px;color:#fff;font-family:'Baloo 2';font-weight:800;font-size:13px;text-shadow:0 1px 6px rgba(0,0,0,.7);display:flex;align-items:center;gap:6px;z-index:2;}
-.gphoto::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 55%, rgba(8,40,20,.6));pointer-events:none;}
-.gphoto .medal{position:absolute;top:8px;right:8px;background:var(--gold);color:var(--green-deep);font-family:'Baloo 2';font-weight:800;font-size:11px;padding:3px 9px;border-radius:999px;z-index:2;box-shadow:var(--shadow-sm);}
+.gallery{margin-top:16px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.gphoto{position:relative;border-radius:14px;overflow:hidden;box-shadow:var(--shadow-sm);border:2px solid #fff;background:#dfeede;opacity:0;transform:translateY(16px) scale(.96);}
+.gphoto.in{opacity:1;transform:none;transition:opacity .45s ease, transform .45s ease;}
+.gphoto img{width:100%;height:100%;object-fit:cover;display:block;aspect-ratio:1/1;cursor:zoom-in;transition:transform .3s ease;}
+.gphoto:active img{transform:scale(1.07);}
+.gphoto .medal{position:absolute;top:5px;left:5px;background:var(--gold);color:var(--green-deep);font-family:'Baloo 2';font-weight:800;font-size:12px;padding:2px 7px;border-radius:999px;z-index:2;box-shadow:var(--shadow-sm);}
+.lb-cap{position:absolute;left:0;right:0;bottom:calc(20px + env(safe-area-inset-bottom));text-align:center;color:#fff;font-family:'Baloo 2';font-weight:800;font-size:15px;text-shadow:0 2px 8px rgba(0,0,0,.6);padding:0 16px;}
 
 /* ===== ENERGÍA ===== */
 .energy{margin-top:30px;text-align:center;background:linear-gradient(160deg,#fff,#eef8e8);border:2px solid #bfe6c8;border-radius:var(--r-lg);padding:24px 18px;box-shadow:var(--shadow);overflow:hidden;}
@@ -333,7 +330,7 @@ footer .made{margin-top:6px;color:var(--gold-deep);font-family:'Baloo 2';}
     <div class="sec-title">
       <div class="eyebrow">仲間</div>
       <h2>El equipo unido</h2>
-      <p>Toca una foto para verla en grande 🔍</p>
+      <p>Todas nuestras fotos 📸 — toca cualquiera para ampliar</p>
     </div>
     <div class="gallery" id="gallery"></div>
   </section>
@@ -386,6 +383,7 @@ footer .made{margin-top:6px;color:var(--gold-deep);font-family:'Baloo 2';}
 <div id="lightbox" class="lightbox" aria-hidden="true" aria-label="Foto ampliada">
   <button class="lb-close" aria-label="Cerrar">✕</button>
   <img id="lightboxImg" alt="" />
+  <div id="lbCap" class="lb-cap"></div>
 </div>
 
 <!-- ===== CONTROLES ===== -->
@@ -408,11 +406,44 @@ const TEAM = [
   {key:'daniel', name:'Daniel', photo:'img/daniel.png', animal:'bunny', acc:'var(--c-dani)', soft:'var(--c-dani-soft)', belt:'Cinturón morado', tagline:'Tranquilo, listo y certero', rep:'Guayabalía Etapa 6', kanji:'技', cry:'¡Golpe certero!', s1:['99','Enfoque'], s2:['98','Precisión']},
 ];
 const GALLERY = [
-  {src:'img/action1.png', cap:'Coscu en competencia', medal:'🥇 Karate', wide:true},
-  {src:'img/action2.png', cap:'Daniel en el tatami', medal:'🥋 Dojo'},
-  {src:'img/group2.png', cap:'Siempre juntos 💚'},
-  {src:'img/group4.png', cap:'Buena energía ✨'},
-  {src:'img/group3.png', cap:'El equipo 🌸', wide:true},
+  // karate / tatami (destacadas con medalla)
+  {src:'img/coscu1.png', cap:'Coscu en competencia', medal:'🥇'},
+  {src:'img/daniel3.png', cap:'Daniel en el tatami', medal:'🥋'},
+  // todos juntos
+  {src:'img/todos1.png', cap:'Todos juntos'},
+  {src:'img/todos2.png', cap:'Todos juntos'},
+  {src:'img/todos3.png', cap:'Todos juntos'},
+  {src:'img/todos4.png', cap:'Todos juntos'},
+  {src:'img/hombres1.png', cap:'Los chicos'},
+  {src:'img/hombres2.png', cap:'Los chicos'},
+  // combos
+  {src:'img/danielcoscu1.png', cap:'Daniel & Coscu'},
+  {src:'img/paniaguaycoscu1.png', cap:'Paniagua & Coscu'},
+  {src:'img/sarapaniagua1.png', cap:'Sara & Paniagua'},
+  {src:'img/sarapaniagua2.png', cap:'Sara & Paniagua'},
+  {src:'img/sarapaniagua3.png', cap:'Sara & Paniagua'},
+  {src:'img/sarapaniagua4.png', cap:'Sara & Paniagua'},
+  // Sara
+  {src:'img/sara1.png', cap:'Sara'},
+  {src:'img/sara2.png', cap:'Sara'},
+  {src:'img/sara3.png', cap:'Sara'},
+  {src:'img/sara4.png', cap:'Sara'},
+  {src:'img/sara5.png', cap:'Sara'},
+  {src:'img/sara7.png', cap:'Sara'},
+  // Coscu
+  {src:'img/coscu3.png', cap:'Coscu'},
+  {src:'img/coscu4.png', cap:'Coscu'},
+  {src:'img/coscu5.png', cap:'Coscu'},
+  {src:'img/coscu27.png', cap:'Coscu'},
+  // Paniagua
+  {src:'img/paniagua1.png', cap:'Paniagua'},
+  {src:'img/paniagua2.png', cap:'Paniagua'},
+  // Daniel
+  {src:'img/Daniel1.png', cap:'Daniel'},
+  {src:'img/daniel2.png', cap:'Daniel'},
+  {src:'img/daniel4.png', cap:'Daniel'},
+  {src:'img/daniel5.png', cap:'Daniel'},
+  {src:'img/daniel6.png', cap:'Daniel'},
 ];
 const VALUES = [
   {ko:'礼', name:'Respeto', desc:'Honrar al rival y al sensei', c:'var(--green)'},
@@ -524,10 +555,9 @@ document.getElementById('team').innerHTML = TEAM.map((f,i)=>{
 }).join('');
 
 document.getElementById('gallery').innerHTML = GALLERY.map(g=>`
-  <figure class="gphoto ${g.wide?'wide':''}">
+  <figure class="gphoto" data-cap="${g.cap}">
     ${g.medal?`<span class="medal">${g.medal}</span>`:''}
     <img src="${g.src}" alt="${g.cap}" loading="lazy" decoding="async" />
-    <figcaption class="cap">${g.cap}</figcaption>
   </figure>`).join('');
 
 document.getElementById('values').innerHTML = VALUES.map(v=>`
@@ -721,8 +751,8 @@ if(logoCard) logoCard.addEventListener('click',()=>{
 });
 
 /* ---- galería: lightbox ---- */
-const lb=document.getElementById('lightbox'), lbImg=document.getElementById('lightboxImg');
-document.getElementById('gallery').addEventListener('click',(e)=>{ const fig=e.target.closest('.gphoto'); if(!fig)return; const img=fig.querySelector('img'); if(!img)return; lbImg.src=img.src; lbImg.alt=img.alt; lb.classList.add('open'); lb.setAttribute('aria-hidden','false'); });
+const lb=document.getElementById('lightbox'), lbImg=document.getElementById('lightboxImg'), lbCap=document.getElementById('lbCap');
+document.getElementById('gallery').addEventListener('click',(e)=>{ const fig=e.target.closest('.gphoto'); if(!fig)return; const img=fig.querySelector('img'); if(!img)return; lbImg.src=img.src; lbImg.alt=img.alt; lbCap.textContent=fig.dataset.cap||''; lb.classList.add('open'); lb.setAttribute('aria-hidden','false'); });
 function closeLb(){ lb.classList.remove('open'); lb.setAttribute('aria-hidden','true'); }
 lb.addEventListener('click',(e)=>{ if(e.target===lb||e.target.classList.contains('lb-close'))closeLb(); });
 addEventListener('keydown',(e)=>{ if(e.key==='Escape')closeLb(); });
