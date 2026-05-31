@@ -164,9 +164,16 @@ body{
 @keyframes pop{0%{transform:scale(1);}40%{transform:scale(1.06);}100%{transform:scale(1);}}
 
 /* ===== GALERÍA ===== */
-.gallery{margin-top:16px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
-.gphoto{position:relative;border-radius:14px;overflow:hidden;box-shadow:var(--shadow-sm);border:2px solid #fff;background:#dfeede;opacity:0;transform:translateY(16px) scale(.96);}
+.gal-tabs{display:flex;flex-wrap:wrap;justify-content:center;gap:7px;margin-top:14px;}
+.gtab{font-family:'Baloo 2';font-weight:800;font-size:12.5px;padding:7px 13px;border-radius:999px;border:2px solid #cdeacb;background:#fff;color:var(--green-strong);cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .12s ease,background .2s,color .2s,border-color .2s;}
+.gtab:active{transform:scale(.93);}
+.gtab.active{background:var(--tabc,var(--green));border-color:var(--tabc,var(--green));color:#fff;box-shadow:var(--shadow-sm);}
+.gallery{margin-top:14px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.gphoto{position:relative;border-radius:14px;overflow:hidden;box-shadow:var(--shadow-sm);border:3px solid var(--gc,#fff);background:#dfeede;opacity:0;transform:translateY(16px) scale(.96);}
 .gphoto.in{opacity:1;transform:none;transition:opacity .45s ease, transform .45s ease;}
+.gphoto.ghide{display:none;}
+.gphoto.gin{animation:gPop .35s ease;}
+@keyframes gPop{0%{opacity:0;transform:scale(.85);}100%{opacity:1;transform:scale(1);}}
 .gphoto img{width:100%;height:100%;object-fit:cover;display:block;aspect-ratio:1/1;cursor:zoom-in;transition:transform .3s ease;}
 .gphoto:active img{transform:scale(1.07);}
 .gphoto .medal{position:absolute;top:5px;left:5px;background:var(--gold);color:var(--green-deep);font-family:'Baloo 2';font-weight:800;font-size:12px;padding:2px 7px;border-radius:999px;z-index:2;box-shadow:var(--shadow-sm);}
@@ -297,7 +304,7 @@ footer .made{margin-top:6px;color:var(--gold-deep);font-family:'Baloo 2';}
     </span>
 
     <div class="hero-photo">
-      <img src="img/group1.png" alt="Sara, Coscu, Paniagua, Daniel y el equipo juntos" />
+      <img src="img/todos2.png" alt="Sara, Coscu, Paniagua, Daniel y el equipo juntos" />
       <span class="tag">¡Vamos equipo! 💚</span>
     </div>
 
@@ -332,6 +339,7 @@ footer .made{margin-top:6px;color:var(--gold-deep);font-family:'Baloo 2';}
       <h2>El equipo unido</h2>
       <p>Todas nuestras fotos 📸 — toca cualquiera para ampliar</p>
     </div>
+    <div class="gal-tabs" id="galTabs" role="tablist"></div>
     <div class="gallery" id="gallery"></div>
   </section>
 
@@ -407,43 +415,51 @@ const TEAM = [
 ];
 const GALLERY = [
   // karate / tatami (destacadas con medalla)
-  {src:'img/coscu1.png', cap:'Coscu en competencia', medal:'🥇'},
-  {src:'img/daniel3.png', cap:'Daniel en el tatami', medal:'🥋'},
+  {src:'img/coscu1.png', cap:'Coscu en competencia', medal:'🥇', tags:['coscu'], c:'var(--c-coscu)'},
+  {src:'img/daniel3.png', cap:'Daniel en el tatami', medal:'🥋', tags:['daniel'], c:'var(--c-dani)'},
   // todos juntos
-  {src:'img/todos1.png', cap:'Todos juntos'},
-  {src:'img/todos2.png', cap:'Todos juntos'},
-  {src:'img/todos3.png', cap:'Todos juntos'},
-  {src:'img/todos4.png', cap:'Todos juntos'},
-  {src:'img/hombres1.png', cap:'Los chicos'},
-  {src:'img/hombres2.png', cap:'Los chicos'},
+  {src:'img/todos1.png', cap:'Todos juntos', tags:['grupo'], c:'var(--green)'},
+  {src:'img/todos2.png', cap:'Todos juntos', tags:['grupo'], c:'var(--green)'},
+  {src:'img/todos3.png', cap:'Todos juntos', tags:['grupo'], c:'var(--green)'},
+  {src:'img/todos4.png', cap:'Todos juntos', tags:['grupo'], c:'var(--green)'},
+  {src:'img/hombres1.png', cap:'Los chicos', tags:['grupo'], c:'var(--green)'},
+  {src:'img/hombres2.png', cap:'Los chicos', tags:['grupo'], c:'var(--green)'},
   // combos
-  {src:'img/danielcoscu1.png', cap:'Daniel & Coscu'},
-  {src:'img/paniaguaycoscu1.png', cap:'Paniagua & Coscu'},
-  {src:'img/sarapaniagua1.png', cap:'Sara & Paniagua'},
-  {src:'img/sarapaniagua2.png', cap:'Sara & Paniagua'},
-  {src:'img/sarapaniagua3.png', cap:'Sara & Paniagua'},
-  {src:'img/sarapaniagua4.png', cap:'Sara & Paniagua'},
+  {src:'img/danielcoscu1.png', cap:'Daniel & Coscu', tags:['daniel','coscu','grupo'], c:'var(--green)'},
+  {src:'img/paniaguaycoscu1.png', cap:'Paniagua & Coscu', tags:['paniagua','coscu','grupo'], c:'var(--green)'},
+  {src:'img/sarapaniagua1.png', cap:'Sara & Paniagua', tags:['sara','paniagua','grupo'], c:'var(--green)'},
+  {src:'img/sarapaniagua2.png', cap:'Sara & Paniagua', tags:['sara','paniagua','grupo'], c:'var(--green)'},
+  {src:'img/sarapaniagua3.png', cap:'Sara & Paniagua', tags:['sara','paniagua','grupo'], c:'var(--green)'},
+  {src:'img/sarapaniagua4.png', cap:'Sara & Paniagua', tags:['sara','paniagua','grupo'], c:'var(--green)'},
   // Sara
-  {src:'img/sara1.png', cap:'Sara'},
-  {src:'img/sara2.png', cap:'Sara'},
-  {src:'img/sara3.png', cap:'Sara'},
-  {src:'img/sara4.png', cap:'Sara'},
-  {src:'img/sara5.png', cap:'Sara'},
-  {src:'img/sara7.png', cap:'Sara'},
+  {src:'img/sara1.png', cap:'Sara', tags:['sara'], c:'var(--c-sara)'},
+  {src:'img/sara2.png', cap:'Sara', tags:['sara'], c:'var(--c-sara)'},
+  {src:'img/sara3.png', cap:'Sara', tags:['sara'], c:'var(--c-sara)'},
+  {src:'img/sara4.png', cap:'Sara', tags:['sara'], c:'var(--c-sara)'},
+  {src:'img/sara5.png', cap:'Sara', tags:['sara'], c:'var(--c-sara)'},
+  {src:'img/sara7.png', cap:'Sara', tags:['sara'], c:'var(--c-sara)'},
   // Coscu
-  {src:'img/coscu3.png', cap:'Coscu'},
-  {src:'img/coscu4.png', cap:'Coscu'},
-  {src:'img/coscu5.png', cap:'Coscu'},
-  {src:'img/coscu27.png', cap:'Coscu'},
+  {src:'img/coscu3.png', cap:'Coscu', tags:['coscu'], c:'var(--c-coscu)'},
+  {src:'img/coscu4.png', cap:'Coscu', tags:['coscu'], c:'var(--c-coscu)'},
+  {src:'img/coscu5.png', cap:'Coscu', tags:['coscu'], c:'var(--c-coscu)'},
+  {src:'img/coscu27.png', cap:'Coscu', tags:['coscu'], c:'var(--c-coscu)'},
   // Paniagua
-  {src:'img/paniagua1.png', cap:'Paniagua'},
-  {src:'img/paniagua2.png', cap:'Paniagua'},
+  {src:'img/paniagua1.png', cap:'Paniagua', tags:['paniagua'], c:'var(--c-pani)'},
+  {src:'img/paniagua2.png', cap:'Paniagua', tags:['paniagua'], c:'var(--c-pani)'},
   // Daniel
-  {src:'img/Daniel1.png', cap:'Daniel'},
-  {src:'img/daniel2.png', cap:'Daniel'},
-  {src:'img/daniel4.png', cap:'Daniel'},
-  {src:'img/daniel5.png', cap:'Daniel'},
-  {src:'img/daniel6.png', cap:'Daniel'},
+  {src:'img/Daniel1.png', cap:'Daniel', tags:['daniel'], c:'var(--c-dani)'},
+  {src:'img/daniel2.png', cap:'Daniel', tags:['daniel'], c:'var(--c-dani)'},
+  {src:'img/daniel4.png', cap:'Daniel', tags:['daniel'], c:'var(--c-dani)'},
+  {src:'img/daniel5.png', cap:'Daniel', tags:['daniel'], c:'var(--c-dani)'},
+  {src:'img/daniel6.png', cap:'Daniel', tags:['daniel'], c:'var(--c-dani)'},
+];
+const GAL_TABS=[
+  {key:'all', label:'Todos', c:'var(--green)'},
+  {key:'sara', label:'Sara', c:'var(--c-sara)'},
+  {key:'coscu', label:'Coscu', c:'var(--c-coscu)'},
+  {key:'paniagua', label:'Paniagua', c:'var(--c-pani)'},
+  {key:'daniel', label:'Daniel', c:'var(--c-dani)'},
+  {key:'grupo', label:'El grupo', c:'var(--green-deep)'},
 ];
 const VALUES = [
   {ko:'礼', name:'Respeto', desc:'Honrar al rival y al sensei', c:'var(--green)'},
@@ -555,10 +571,23 @@ document.getElementById('team').innerHTML = TEAM.map((f,i)=>{
 }).join('');
 
 document.getElementById('gallery').innerHTML = GALLERY.map(g=>`
-  <figure class="gphoto" data-cap="${g.cap}">
+  <figure class="gphoto" data-cap="${g.cap}" data-tags="${g.tags.join(' ')}" style="--gc:${g.c}">
     ${g.medal?`<span class="medal">${g.medal}</span>`:''}
     <img src="${g.src}" alt="${g.cap}" loading="lazy" decoding="async" />
   </figure>`).join('');
+
+document.getElementById('galTabs').innerHTML = GAL_TABS.map((t,idx)=>{
+  const n = t.key==='all'?GALLERY.length:GALLERY.filter(g=>g.tags.includes(t.key)).length;
+  return `<button class="gtab${idx===0?' active':''}" type="button" data-cat="${t.key}" style="--tabc:${t.c}">${t.label} · ${n}</button>`;
+}).join('');
+function filterGallery(cat){
+  document.querySelectorAll('.gphoto').forEach(f=>{
+    const show = cat==='all' || (f.dataset.tags||'').split(' ').indexOf(cat)>-1;
+    if(show){ f.classList.remove('ghide'); if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){ f.classList.remove('gin'); void f.offsetWidth; f.classList.add('gin'); } }
+    else f.classList.add('ghide');
+  });
+}
+document.getElementById('galTabs').addEventListener('click',(e)=>{ const b=e.target.closest('.gtab'); if(!b)return; document.getElementById('galTabs').querySelectorAll('.gtab').forEach(x=>x.classList.remove('active')); b.classList.add('active'); filterGallery(b.dataset.cat); if(typeof blip==='function') blip(620,0.05); });
 
 document.getElementById('values').innerHTML = VALUES.map(v=>`
   <div class="value"><div class="ko" style="background:${v.c}">${v.ko}</div><h4>${v.name}</h4><p>${v.desc}</p></div>`).join('');
