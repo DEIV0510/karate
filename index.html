@@ -43,6 +43,12 @@ body{
 .bg-deco .k1{top:6%;left:3%;} .bg-deco .k2{bottom:8%;right:3%;color:var(--gold-deep);}
 @media(min-width:1024px){.bg-deco{display:block;}}
 #bg3d{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.92;}
+/* video de fondo (silenciado, en bucle) + velo para legibilidad */
+.bgvid{position:fixed;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;pointer-events:none;}
+.bgveil{position:fixed;inset:0;z-index:-1;pointer-events:none;background:
+  radial-gradient(120% 70% at 82% -10%, rgba(205,238,194,.5) 0%, transparent 55%),
+  radial-gradient(110% 60% at 8% 4%, rgba(227,244,218,.45) 0%, transparent 50%),
+  linear-gradient(180deg, rgba(242,251,237,.6) 0%, rgba(233,246,225,.58) 45%, rgba(255,255,255,.68) 100%);}
 
 .petal{position:fixed;top:-6vh;z-index:1;pointer-events:none;width:14px;height:14px;border-radius:150% 0 150% 0;opacity:.85;will-change:transform;animation:petal-fall linear infinite;}
 @keyframes petal-fall{0%{transform:translateY(-10vh) translateX(0) rotate(0deg);}100%{transform:translateY(112vh) translateX(40px) rotate(420deg);}}
@@ -368,6 +374,10 @@ footer .made{margin-top:6px;color:var(--gold-deep);font-family:'Baloo 2';}
 </div>
 
 <div class="bg-deco" aria-hidden="true"><span class="k1">空</span><span class="k2">手</span></div>
+<video id="bgvid" class="bgvid" autoplay muted loop playsinline preload="auto" aria-hidden="true" tabindex="-1">
+  <source src="fondo.mp4" type="video/mp4" />
+</video>
+<div id="bgveil" class="bgveil" aria-hidden="true"></div>
 <canvas id="bg3d" aria-hidden="true"></canvas>
 
 <header class="topbar">
@@ -1075,6 +1085,17 @@ function init3DBg(){
   window.__bg3d=true;
 }
 init3DBg();
+
+/* ---- video de fondo (silenciado, en bucle) ---- */
+(function(){
+  const v=document.getElementById('bgvid'); if(!v) return;
+  v.muted=true; v.defaultMuted=true;
+  if(reduce){ v.removeAttribute('autoplay'); try{v.pause();}catch(e){} return; }
+  const tryplay=()=>{ try{ const p=v.play(); if(p&&p.catch) p.catch(()=>{}); }catch(e){} };
+  tryplay();
+  addEventListener('pointerdown', tryplay, {once:true});
+  document.addEventListener('visibilitychange',()=>{ if(!document.hidden) tryplay(); });
+})();
 
 /* ---- tilt 3D de la foto del hero ---- */
 (function(){ const hp=document.querySelector('.hero-photo'), fr=document.querySelector('.hp-frame'); if(!hp||!fr||reduce) return; hp.addEventListener('pointermove',(e)=>{ const r=hp.getBoundingClientRect(); const px=(e.clientX-r.left)/r.width-0.5, py=(e.clientY-r.top)/r.height-0.5; fr.style.setProperty('--hry',(px*12).toFixed(1)+'deg'); fr.style.setProperty('--hrx',(-py*12).toFixed(1)+'deg'); }); hp.addEventListener('pointerleave',()=>{ fr.style.setProperty('--hrx','0deg'); fr.style.setProperty('--hry','0deg'); }); })();
